@@ -1,9 +1,11 @@
 const path = require("path");
+const Htmlwebpackplugin = require("html-webpack-plugin");
+const {
+    CleanWebpackPlugin
+} = require("clean-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 module.exports = {
-    entry: {
-        index: "./src/index.js",
-        hello: "./src/hello.js",
-    },
+    entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, "./dist"),
         filename: "[name]-[hash].js",
@@ -24,7 +26,17 @@ module.exports = {
             {
                 test: /\.(png|gif|jpg|jpeg)/,
                 use: "file-loader",
-            }
+            },
+
         ]
-    }
+    },
+    plugins: [
+        new Htmlwebpackplugin({
+            template: path.resolve(__dirname, "./public/index.html"),
+        }),
+        new CleanWebpackPlugin(),
+        new CopyWebpackPlugin([{
+            from: path.resolve(__dirname, "./public"),
+        }])
+    ]
 }
